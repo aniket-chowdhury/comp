@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.jypb": "java",
+        "algorithm": "cpp"
+    }
+}
