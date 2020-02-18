@@ -55,20 +55,7 @@ int run(Tester t)
     int i = 0;
     int cor = 0;
     int wron = 0;
-    for (int j = i + 1; i < vec.size(); i++)
-    {
-        auto p = t.test(i, j);
-        if (p.first == 1)
-        {
-            cor++;
-        }
-        else
-        {
-            wron++;
-            tests.push_back(j);
-        }
-    }
-    if (cor > wron)
+     if (cor > wron)
     {
         return i;
     }

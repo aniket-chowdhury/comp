@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     {
         auto elem = v[i];
         e_t = std::get<1>(elem);
-        std::cout << std::get<0>(elem) << "\t\t" << std::get<1>(elem) << "\t\b\b\b\b" << std::get<2>(elem)
+        std::cout << std::get<0>(elem) << "\t" << std::get<1>(elem) << "\t\b\b\b\b" << std::get<2>(elem)
                   << "\tfrom " << curr_t << " to " << curr_t+std::get<2> (elem) << "\n";
         curr_t += std::get<2>(elem);
         if (curr_t >= e_t)

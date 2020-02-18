@@ -59,10 +59,11 @@ int main(int argc, char *argv[])
     {
         auto elem = v[i];
         e_t = std::get<1>(elem);
-        std::cout << std::get<0>(elem) << "\t\t" << std::get<1>(elem) << "\t\t" << std::get<2>(elem) << "\n";
+        std::cout << std::get<0>(elem) << "\t\t" << std::get<1>(elem) << "\t\t"
+                  << std::get<2>(elem) << "\tat " << curr_t << "\n";
         if (curr_t >= e_t)
             penalty += std::get<2>(elem);
-        curr_t+=1;
+        curr_t += 1;
     }
     std::cout << "Penalty = " << penalty << "\n";
     return 0;

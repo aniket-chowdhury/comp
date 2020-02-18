@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <utility>
 #include <stdexcept>
@@ -64,7 +65,8 @@ std::pair<int, int> test(int i, int j, std::vector<int> vec)
     if (vec.size() == 0)
         throw std::invalid_argument("Empty array");
     if (i < 0 || j < 0 || i >= vec.size() || j >= vec.size())
-        throw std::invalid_argument("i or j out of range");
+        throw std::invalid_argument("i or j out of range" + std::to_string(i) + std::to_string(j));
+        // return std::make_pair<int, int>(1, 1);
 
     if (vec[i] == 1 && vec[j] == 1)
         return std::make_pair<int, int>(1, 1);
@@ -80,56 +82,52 @@ std::pair<int, int> test(int i, int j, std::vector<int> vec)
 }
 
 std::vector<int> tests;
+int left;
 
 int run(const std::vector<int> &vec, std::vector<int> indexes)
 {
     if (indexes.size() == 0)
-        throw std::invalid_argument("indexes is empty");
-    // for (auto &&i : indexes)
-    // {
-    //     print(i);
-    // }
-    // print("\n");
+        return left;
 
-    int i = 0, cor = 0, wron = 0;
+    if (indexes.size() == 1)
+        return indexes[0];
+    if (indexes.size() == 2)
+    {
+        auto p = test(indexes[0], indexes[1], vec);
+        if (p.first == 1 && p.second == 1)
+            return indexes[0];
+        else return left;
+    }
+
+    if(left!=-1)tests.push_back(left);
+    left = (indexes.size() % 2) != 0 ? vec[indexes.size() - 1] : -1;
+    int i = 1, cor = 0, wron = 0;
     tests.clear();
-    for (int j = i + 1; j < indexes.size(); j++)
+    for (int i = 0; i < indexes.size() / 2; i += 2)
     {
         int index1 = indexes[i];
-        int index2 = indexes[j];
+        int index2 = indexes[i + 1];
         auto p = test(index1, index2, vec);
-        if (p.first == 1)
+        if (p.first == -1 && p.second == -1)
         {
-            cor++;
+            continue;
         }
         else
         {
-            wron++;
-            tests.push_back(j);
+            tests.push_back(i);
         }
     }
-    if (cor > wron)
-    {
-        out[indexes[0]] = 1;
-        return indexes[0];
-    }
-    else
-    {
-        out[indexes[0]] = -1;
-        return run(vec, tests);
-    }
+    return run(vec, tests);
 }
 
 int main(int argc, char *argv[])
 {
     srand(static_cast<unsigned int>(time(0)));
     int n;
-    // std::cin >> n;
-    std::vector<int> vec(100000);
+    std::vector<int> vec(10000);
     for (int i = 0; i < vec.size(); i++)
     {
         vec[i] = r();
-        // print(vec[i]);
     }
 
     std::vector<int> indexes(vec.size());
@@ -139,7 +137,10 @@ int main(int argc, char *argv[])
     for (int i = 0; i < vec.size(); i++)
     {
         if (i == correct)
+        {
+            out[i] = 1;
             continue;
+        }
         auto p = test(correct, i, vec);
         if (p.second == 1)
             out[i] = 1;
@@ -148,8 +149,9 @@ int main(int argc, char *argv[])
     }
     for (size_t i = 0; i < vec.size(); i++)
     {
+
         if (out[i] != vec[i])
-            print("fail");
+            continue;
     }
     print("success\n");
     return 0;
